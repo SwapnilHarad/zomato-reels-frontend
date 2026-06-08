@@ -43,7 +43,7 @@ const CreateFood = () => {
             formData.append('video', videoFile); 
 
             // Post request to backend matching your exact endpoint schema
-            const response = await axios.post('http://localhost:3000/api/food/', formData, {
+            const response = await axios.post('https://zomato-reels-backend-qn19.onrender.com/api/food/', formData, {
                 withCredentials: true, 
                 headers: {
                     'Content-Type': 'multipart/form-data',

@@ -61,7 +61,7 @@ const ReelsFeed = () => {
 
   // --- FETCHING DATA ---
   useEffect(() => {
-    axios.get('http://localhost:3000/api/food',{withCredentials: true})
+    axios.get('https://zomato-reels-backend-qn19.onrender.com/api/food',{withCredentials: true})
       .then(response => {
         setVideos(response.data.foodItems || response.data);
       })

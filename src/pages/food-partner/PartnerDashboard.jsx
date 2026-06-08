@@ -28,7 +28,7 @@ const PartnerDashboard = () => {
 
     const fetchDashboard = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/food-partner/${id}`, {
+            const response = await axios.get(`https://zomato-reels-backend-qn19.onrender.com/api/food-partner/${id}`, {
                 withCredentials: true
             });
             setPartner(response.data.foodPartner);
@@ -54,7 +54,7 @@ const PartnerDashboard = () => {
     const confirmDeleteReel = async () => {
         try {
             await axios.delete(
-                `http://localhost:3000/api/food/${reelToDelete}`,
+                `https://zomato-reels-backend-qn19.onrender.com/api/food/${reelToDelete}`,
                 {
                     withCredentials: true
                 }
@@ -94,7 +94,7 @@ const PartnerDashboard = () => {
             const formData = new FormData();
             formData.append('profileImage', selectedFile);
 
-            await axios.put(`http://localhost:3000/api/food-partner/update-image/${id}`, formData, {
+            await axios.put(`https://zomato-reels-backend-qn19.onrender.com/api/food-partner/update-image/${id}`, formData, {
                 withCredentials: true,
                 headers: { 'Content-Type': 'multipart/form-data' }
             });

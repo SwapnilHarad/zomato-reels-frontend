@@ -18,7 +18,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/api/food-partner/${id}`, {
+                const response = await axios.get(`https://zomato-reels-backend-qn19.onrender.com/api/food-partner/${id}`, {
                     withCredentials: true
                 });
                 setPartner(response.data.foodPartner);

@@ -19,7 +19,7 @@ const UserLogin = () => {
     const password = e.target.password.value;
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/user/login', {
+      const response = await axios.post('https://zomato-reels-backend-qn19.onrender.com/api/auth/user/login', {
         email: email,
         password: password
       }, {
@@ -52,7 +52,7 @@ const UserLogin = () => {
     setForgotStatus({ loading: true, message: "", type: "" });
 
     try {
-      await axios.post('http://localhost:3000/api/auth/user/forgot-password', { email: forgotEmail });
+      await axios.post('https://zomato-reels-backend-qn19.onrender.com/api/auth/user/forgot-password', { email: forgotEmail });
       
       setForgotStatus({ 
         loading: false, 
