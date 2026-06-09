@@ -29,8 +29,12 @@ const UserLogin = () => {
       console.log("Login response:", response.data);
       
       // --- CRITICAL STEP 1 ADDITION ---
-      // Save user role so the Zomato Home page knows they are logged in!
       localStorage.setItem('userRole', 'user');
+
+      // 🌟 NEW FIX: Save the token to bypass mobile cookie blockers!
+      if (response.data.token) {
+        localStorage.setItem('authToken', response.data.token);
+      }
       
       navigate('/'); 
 

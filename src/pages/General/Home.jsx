@@ -59,9 +59,17 @@ const ReelsFeed = () => {
     });
   };
 
-  // --- FETCHING DATA ---
+  // --- FETCHING DATA WITH MOBILE TOKEN FIX ---
   useEffect(() => {
-    axios.get('https://zomato-reels-backend-qn19.onrender.com/api/food',{withCredentials: true})
+    // Grab the token that we saved during login!
+    const token = localStorage.getItem('authToken');
+
+    axios.get('https://zomato-reels-backend-qn19.onrender.com/api/food', {
+      headers: {
+        'Authorization': `Bearer ${token}` // Send the token in the header
+      },
+      withCredentials: true
+    })
       .then(response => {
         setVideos(response.data.foodItems || response.data);
       })
