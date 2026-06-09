@@ -121,6 +121,25 @@ const PartnerDashboard = () => {
         }
     };
 
+    // --- PROPER LOGOUT HANDLER ---
+    const handleConfirmLogout = async () => {
+        try {
+            // 1. Tell backend to clear the secure cookie
+            await axios.get('https://zomato-reels-backend-qn19.onrender.com/api/auth/food-partner/logout', {
+                withCredentials: true
+            });
+        } catch (error) {
+            console.error("Logout request failed:", error);
+        }
+
+        // 2. Clear Zomato Home local storage flags
+        localStorage.removeItem('userRole');
+        localStorage.removeItem('partnerId');
+
+        // 3. Redirect back to login
+        navigate('/food-partner/login');
+    };
+
     if (loading) {
         return <div className="min-h-screen bg-[#050505] text-white flex justify-center items-center font-bold tracking-widest text-purple-600 animate-pulse">LOADING KITCHEN...</div>;
     }
@@ -214,7 +233,7 @@ const PartnerDashboard = () => {
                             >
                                 <video src={reel.video} className="w-full h-full object-cover" muted preload="metadata" />
                                 
-                                {/* INTERACTIVE ABSOLUTE TRASH BUTTON CONTAINER (STAYING ON UPPER SIDE) */}
+                                {/* INTERACTIVE ABSOLUTE TRASH BUTTON CONTAINER */}
                                 <div className="absolute top-1.5 right-1.5 z-30">
                                     <button
                                         onClick={(e) => handleDeleteClick(e, reel._id)}
@@ -348,14 +367,14 @@ const PartnerDashboard = () => {
                         <div className="flex justify-center gap-3">
                             <button
                                 onClick={() => setShowDeleteModal(false)}
-                                className="px-5 py-2 rounded-xl bg-gray-700 text-white"
+                                className="px-5 py-2 rounded-xl bg-gray-700 text-white hover:bg-gray-600 transition-colors"
                             >
                                 Cancel
                             </button>
 
                             <button
                                 onClick={confirmDeleteReel}
-                                className="px-5 py-2 rounded-xl bg-red-500 text-white font-semibold"
+                                className="px-5 py-2 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors"
                             >
                                 Delete
                             </button>
@@ -373,7 +392,8 @@ const PartnerDashboard = () => {
                             <p className="text-white font-black tracking-widest uppercase text-xs">Log Out?</p>
                             <p className="text-gray-400 text-[11px] tracking-wide leading-relaxed">Do you want to logout of your Partner Portal?</p>
                         </div>
-                        <button onClick={async () => navigate('/food-partner/login')} className="w-16 h-16 rounded-full flex items-center justify-center active:scale-90 transition-transform" style={{ background: 'linear-gradient(135deg, #ff4d4d 0%, #c0392b 100%)', boxShadow: '0 0 24px rgba(239,68,68,0.45)' }}><span className="text-white font-black tracking-widest text-[11px] uppercase">Yes</span></button>
+                        {/* 🌟 FIXED: NOW CALLS handleConfirmLogout TO CLEAR COOKIES 🌟 */}
+                        <button onClick={handleConfirmLogout} className="w-16 h-16 rounded-full flex items-center justify-center active:scale-90 transition-transform" style={{ background: 'linear-gradient(135deg, #ff4d4d 0%, #c0392b 100%)', boxShadow: '0 0 24px rgba(239,68,68,0.45)' }}><span className="text-white font-black tracking-widest text-[11px] uppercase">Yes</span></button>
                         <button onClick={() => setShowLogoutModal(false)} className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-gray-300 transition-colors">Cancel</button>
                     </div>
                 </div>
