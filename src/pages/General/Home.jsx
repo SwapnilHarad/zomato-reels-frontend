@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Store, Heart, MessageCircle, Share2, Volume2, VolumeX, X, Send, Copy, Check, ArrowLeft } from 'lucide-react';
+import { Store, Heart, MessageCircle, Share2, Volume2, VolumeX, X, Send, Copy, Check, ArrowLeft, LogOut } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 
-const ReelsFeed = () => {
+const Home = () => {
   const navigate = useNavigate();
   const [videos, setVideos] = useState([]);
   const [isMuted, setIsMuted] = useState(true); 
@@ -17,6 +17,9 @@ const ReelsFeed = () => {
   const [newComment, setNewComment] = useState('');
   const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
+  
+  // --- STATE FOR FEED LOGOUT MODAL ---
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   // --- AUTOPLAY LOGIC WITH DYNAMIC MUTING ---
   useEffect(() => {
@@ -59,14 +62,14 @@ const ReelsFeed = () => {
     });
   };
 
-  // --- FETCHING DATA WITH MOBILE TOKEN FIX ---
+  // --- 🌟 FIXED: FETCHING DATA WITH MOBILE TOKEN BYPASS 🌟 ---
   useEffect(() => {
-    // Grab the token that we saved during login!
+    // 1. Grab the token saved during login
     const token = localStorage.getItem('authToken');
 
-    axios.get('https://zomato-reels-backend-qn19.onrender.com/api/food', {
+    axios.get('https://zomato-reels-backend-qn19.onrender.com/api/food',{
       headers: {
-        'Authorization': `Bearer ${token}` // Send the token in the header
+        'Authorization': `Bearer ${token}` // 2. Send it to bypass cookie blockers!
       },
       withCredentials: true
     })
@@ -121,6 +124,14 @@ const ReelsFeed = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // --- CONFIRM FEED LOGOUT ---
+  const handleConfirmLogout = () => {
+    setShowLogoutModal(false);
+    localStorage.removeItem('userRole'); // Clear saved data
+    localStorage.removeItem('authToken'); // Clear token
+    navigate('/user/login');
+  };
+
   return (
     <div ref={containerRef} className="h-screen w-full overflow-y-scroll snap-y snap-mandatory bg-black relative">
       
@@ -156,6 +167,10 @@ const ReelsFeed = () => {
             from { transform: scale(0.9) translateY(20px); opacity: 0; }
             to { transform: scale(1) translateY(0); opacity: 1; }
           }
+          @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.85); }
+            to   { opacity: 1; transform: scale(1); }
+          }
           .comment-sheet {
             animation: slideUp 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94) forwards;
           }
@@ -168,9 +183,9 @@ const ReelsFeed = () => {
       {/* --- PERSISTENT FLOATING BACK BUTTON --- */}
       <div className="fixed top-6 left-4 z-40">
         <button
-          onClick={() => navigate('/')} 
+          onClick={() => setShowLogoutModal(true)}
           className="bg-black/40 text-white p-3 rounded-full backdrop-blur-md border border-white/10 active:scale-90 transition-transform shadow-lg"
-          title="Back to Home"
+          title="Back to Login"
         >
           <ArrowLeft size={18} />
         </button>
@@ -332,8 +347,66 @@ const ReelsFeed = () => {
         </div>
       )}
 
+      {/* --- CENTER POP-UP GLASS FEED LOGOUT MODAL --- */}
+      {showLogoutModal && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+          onClick={() => setShowLogoutModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'rgba(255,255,255,0.06)',
+              backdropFilter: 'blur(40px)',
+              WebkitBackdropFilter: 'blur(40px)',
+              border: '1px solid rgba(168, 85, 247, 0.25)', // Purple accent border tint
+              boxShadow: '0 8px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.08)',
+              animation: 'modalPop 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards',
+            }}
+            className="rounded-3xl px-8 py-10 flex flex-col items-center gap-7 w-[280px]"
+          >
+            {/* Modal Icon Header */}
+            <div className="w-14 h-14 rounded-full flex items-center justify-center"
+                style={{ background: 'rgba(168, 85, 247, 0.12)', border: '1px solid rgba(168, 85, 247, 0.25)' }}>
+                <LogOut size={24} className="text-purple-400" />
+            </div>
+
+            {/* Modal Label Content */}
+            <div className="text-center flex flex-col gap-2">
+                <p className="text-white font-black tracking-widest uppercase text-xs">
+                    Exit Feed?
+                </p>
+                <p className="text-gray-400 text-[11px] tracking-wide leading-relaxed">
+                    Do you want to Logout From Feed?
+                </p>
+            </div>
+
+            {/* YES Circular Neon Accent Button */}
+            <button
+                onClick={handleConfirmLogout}
+                className="w-16 h-16 rounded-full flex items-center justify-center active:scale-90 transition-transform"
+                style={{
+                    background: 'linear-gradient(135deg, #a855f7 0%, #6b21a8 100%)',
+                    boxShadow: '0 0 24px rgba(168, 85, 247, 0.45)',
+                }}
+            >
+                <span className="text-white font-black tracking-widest text-[11px] uppercase">Yes</span>
+            </button>
+
+            {/* Dismiss Text Trigger */}
+            <button
+                onClick={() => setShowLogoutModal(false)}
+                className="text-[10px] uppercase tracking-widest text-gray-500 hover:text-gray-300 transition-colors"
+            >
+                Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
 
-export default ReelsFeed;
+export default Home;
