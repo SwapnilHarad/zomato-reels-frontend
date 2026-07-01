@@ -73,7 +73,7 @@ const Profile = () => {
                 
                 {/* --- HEADER --- */}
                 <div className="flex items-center justify-between mb-10">
-                    <button onClick={() => navigate('/')} className="ios-glass flex items-center justify-center gap-2 text-white font-bold px-5 py-2.5 rounded-full uppercase tracking-wider text-[10px] active:scale-95 transition-transform">
+                    <button onClick={() => navigate('/reels')} className="ios-glass flex items-center justify-center gap-2 text-white font-bold px-5 py-2.5 rounded-full uppercase tracking-wider text-[10px] active:scale-95 transition-transform">
                         <ArrowLeft size={14} /> Back to Feed
                     </button>
                     <div className="text-sm font-black tracking-widest uppercase italic text-purple-500">Profile</div>
