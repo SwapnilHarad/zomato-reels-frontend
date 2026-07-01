@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ArrowLeft } from 'lucide-react'; // Added icon for the back button
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -76,6 +77,17 @@ const UserLogin = () => {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-sans px-6 flex items-center justify-center relative">
       
+      {/* --- TOP LEFT BACK BUTTON --- */}
+      <div className="absolute top-6 left-6 z-50">
+        <button
+          onClick={() => navigate('/')}
+          className="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center hover:bg-white/10 active:scale-95 transition-all shadow-lg"
+          title="Back to Home"
+        >
+          <ArrowLeft size={18} className="text-gray-300" />
+        </button>
+      </div>
+
       {/* Reusable Animation Styles */}
       <style>
         {`
@@ -86,7 +98,7 @@ const UserLogin = () => {
         `}
       </style>
 
-      <div className="max-w-md w-full">
+      <div className="max-w-md w-full mt-8">
         {/* Header */}
         <header className="text-center mb-10">
           <h1 className="text-4xl font-black uppercase italic tracking-tighter">
