@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, User, Store, LogOut, Star, Clock, MapPin, ShieldCheck, Volume2, Video, X, Wallet } from 'lucide-react';
+import { Search, User, Store, LogOut, Star, Clock, MapPin, ShieldCheck, Volume2, Video, X, Wallet, Home, Utensils } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const ZomatoHome = () => {
@@ -295,14 +295,31 @@ const ZomatoHome = () => {
         </div>
       </footer>
 
-      {/* --- STICKY BOTTOM ACTIONS PILL (Green Button from 2nd Image) --- */}
-      <div className="fixed bottom-6 right-6 z-50 animate-bounce">
-        <button 
-          onClick={handleReelsClick}
-          className="bg-gradient-to-br from-[#10b981] to-[#047857] border border-[#34d399]/30 rounded-full p-4 flex items-center justify-center shadow-[0_0_30px_rgba(4,120,87,0.5)] active:scale-90 transition-transform cursor-pointer"
-        >
-          <Video size={24} className="text-[#d4ff00]" fill="currentColor" />
-        </button>
+      {/* --- STICKY BOTTOM NAVIGATION BAR (CENTERED REELS BUTTON) --- */}
+      <div className="fixed bottom-4 left-0 w-full px-4 z-50">
+        <div className="bg-[#1a1a1c] border border-white/10 rounded-[28px] p-2 flex justify-between items-center shadow-[0_10px_40px_rgba(0,0,0,0.8)] backdrop-blur-xl max-w-md mx-auto relative">
+            
+            <div className="flex-1 flex flex-col items-center gap-1 cursor-pointer" onClick={() => navigate('/')}>
+                <Home size={22} className="text-red-500" fill="currentColor" />
+                <span className="text-[10px] font-bold text-white">Home</span>
+            </div>
+
+            {/* --- CENTERED REELS BUTTON (text-purple-600) --- */}
+            <div 
+                onClick={handleReelsClick}
+                className="flex flex-col items-center gap-1 cursor-pointer active:scale-95 transition-transform"
+            >
+                <div className="p-3 rounded-full bg-white/5 border border-purple-600/30 shadow-[0_0_15px_rgba(147,51,234,0.15)]">
+                  <Video size={24} className="text-purple-600" />
+                </div>
+                <span className="text-[10px] font-bold text-purple-600 tracking-wide">Food Reels</span>
+            </div>
+
+            <div className="flex-1 flex flex-col items-center gap-1 cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+                <Utensils size={22} />
+                <span className="text-[10px] font-medium">Dining</span>
+            </div>
+        </div>
       </div>
 
       {/* --- MODALS SYSTEM --- */}
