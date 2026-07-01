@@ -37,7 +37,7 @@ const UserLogin = () => {
         localStorage.setItem('authToken', response.data.token);
       }
       
-      navigate('/'); 
+      navigate('/reels'); // Navigate to the reels feed after successful login
 
     } catch (error) {
       console.error("Login failed:", error);
